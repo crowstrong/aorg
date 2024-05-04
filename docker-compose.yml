@@ -1,0 +1,40 @@
+# version: "3"
+
+# services:
+#   web-app:
+#     build: 
+#     context: .
+#     ports:
+#       - "8000:8000"
+#     volumes:
+#       - ./amodius:/aorg/amodius
+#     environment:
+#       - DB_HOST=database
+#       - DB_NAME=amodius_db
+#       - DB_USER=postgres
+#       - DB_PASS=admin
+#     depends_on:
+#       - database
+#     command: > 
+#       sh -c "python manage.py runserver 0.0.0.0:8000"
+
+
+
+#   database:
+#     image: postgres:15
+#     container_name: amodius_postgres_db
+#     ports:
+#       - "5432:5432"
+#     environment:
+#       POSTGRES_DB: amodius_db
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: admin
+
+
+
+
+# volumes:
+# #  pg_data: { }
+# #  pgadmin_data: { }
+#   static_content: { }
+#   media_content: { }

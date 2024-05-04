@@ -1,0 +1,47 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# IDEs
+.idea
+.vscode
+
+# Environment
+.venv
+
+# Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist/
+build/
+
+# ignore README
+readme.md
+
+# ignore black and flake8
+.black.toml
+.flake8
+
+
