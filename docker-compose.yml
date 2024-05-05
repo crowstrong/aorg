@@ -1,40 +1,60 @@
-# version: "3"
+version: "3.8"
 
-# services:
-#   web-app:
-#     build: 
-#     context: .
-#     ports:
-#       - "8000:8000"
-#     volumes:
-#       - ./amodius:/aorg/amodius
-#     environment:
-#       - DB_HOST=database
-#       - DB_NAME=amodius_db
-#       - DB_USER=postgres
-#       - DB_PASS=admin
-#     depends_on:
-#       - database
-#     command: > 
-#       sh -c "python manage.py runserver 0.0.0.0:8000"
+services:
+  
+  redis:
+    image: redis:7.0.11-alpine
+    env_file:
+      - .env
+    restart: on-failure
+    depends_on:
+      - backend
+
+  celery:
+    build: ./
+    command: 
+      - ./commands/start_celery.sh
+    restart: always
+    volumes:
+      - ./src:/amodius
+      - ./commands:/amodius/commands
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - backend
+
+  celerybeat:
+    build: ./
+    command:
+      - ./commands/start_celerybeat.sh
+    restart: always
+    volumes:
+      - ./src:/amodius
+      - ./commands:/amodius/commands
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - celery
 
 
+  backend:
+    container_name: amodius-backend
+    build:
+      context: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./amodius:/usr/src/app/
+    ports:
+      - 8001:8000
+    env_file:
+      - .env
 
-#   database:
-#     image: postgres:15
-#     container_name: amodius_postgres_db
-#     ports:
-#       - "5432:5432"
-#     environment:
-#       POSTGRES_DB: amodius_db
-#       POSTGRES_USER: postgres
-#       POSTGRES_PASSWORD: admin
-
-
-
-
-# volumes:
-# #  pg_data: { }
-# #  pgadmin_data: { }
-#   static_content: { }
-#   media_content: { }
+  db:
+    image: postgres:14-alpine
+    container_name: amodius-postgres
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT}:5432"

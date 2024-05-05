@@ -18,17 +18,21 @@ from django.urls import reverse_lazy
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+from dotenv import load_dotenv
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
+load_dotenv()
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-(5+5koxpde_oz2ol=il8-fr52l689e8uszo+w^1zym7jq%o(c&"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
@@ -54,7 +58,8 @@ INSTALLED_APPS = [
     "django_celery_results",
     "django_celery_beat",
     "rest_framework",
-    "flower",
+    "django_redis",
+    # "flower",
     "core",
     "feedback",
     "post",
@@ -104,22 +109,14 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "HOST": "database",
-        "NAME": "amodius_db",
-        "USER": "postgres",
-        "PASSWORD": "admin",
+        "NAME": os.environ.get("POSTGRES_DB"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": os.environ.get("POSTGRES_HOST"),
+        "PORT": os.environ.get("POSTGRES_PORT"),
     }
 }
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "HOST": os.environ.get("DB_HOST"),
-#         "NAME": os.environ.get("DB_NAME"),
-#         "USER": os.environ.get("DB_USER"),
-#         "PASSWORD": os.environ.get("DB_PASS"),
-#     }
-# }
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -128,19 +125,23 @@ REST_FRAMEWORK = {
 }
 
 # Настройки Celery
-CELERY_BROKER_URL = "redis://localhost:6379/0"  # URL-адрес Redis
-CELERY_RESULT_BACKEND = "redis://localhost:6379/0"  # URL-адрес Redis для хранения результатов задач
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")  # URL-адрес Redis
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND")  # URL-адрес Redis для хранения результатов задач
 
 # Настройки Redis для кеширования
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://localhost:6379/1",  # URL-адрес Redis для кеширования
+        "LOCATION": os.environ.get("REDIS_LOCATION"),  # URL-адрес Redis для кеширования
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
     }
 }
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+
 
 
 # Password validation

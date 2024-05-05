@@ -1,19 +1,19 @@
-FROM python:3.10
+FROM python:3.11.4-alpine
 
-# RUN mkdir /aorg
+WORKDIR /usr/src/app
 
-# WORKDIR /aorg
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# COPY . /aorg
+RUN pip install --upgrade pip
 
-# RUN python -m pip install --upgrade pip
-# RUN pip install -r ./requirements.txt
+COPY ./requirements.txt /usr/src/app/requirements.txt 
 
-# COPY requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# EXPOSE 8000
+COPY ./commands/entrypoint.sh /usr/src/commands/entrypoint.sh
 
-# CMD ["python", "manage.py", "migrate"]
+COPY . /usr/src/app/
 
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["/usr/src/commands/entrypoint.sh"]
 

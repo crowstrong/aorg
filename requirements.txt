@@ -21,6 +21,7 @@ django-filter==24.2
 django-jazzmin==3.0.0
 django-modeltranslation==0.18.11
 django-phonenumber-field==7.3.0
+django-redis==5.4.0
 django-timezone-field==6.1.0
 djangorestframework==3.15.1
 factory-boy==3.3.0
@@ -45,8 +46,10 @@ pycodestyle==2.11.1
 pyflakes==3.2.0
 python-crontab==3.0.0
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
 pytz==2024.1
 redis==5.0.4
+shell==1.0.1
 six==1.16.0
 sqlparse==0.5.0
 tomli==2.0.1

@@ -22,6 +22,7 @@ celerybeat.pid
 
 # Environment
 .venv
+.env
 
 # Compiled source
 *.com
@@ -44,4 +45,4 @@ readme.md
 .black.toml
 .flake8
 
-
+commands.md

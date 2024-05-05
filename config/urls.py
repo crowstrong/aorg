@@ -29,7 +29,7 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("subscription/", include("subscription.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
-    path("flower/", include("flower.urls")),
+    # path("flower/", include("flower.urls")),
     path("api-auth/", include("rest_framework.urls")),
     path("ckeditor5/", include("django_ckeditor_5.urls"), name="ck_editor_5_upload_file"),
 ]
