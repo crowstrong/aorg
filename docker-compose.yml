@@ -1,23 +1,20 @@
-version: "3.8"
+version: "3"
 
 services:
-  
   redis:
     image: redis:7.0.11-alpine
     env_file:
       - .env
     restart: on-failure
-    depends_on:
-      - backend
 
   celery:
-    build: ./
+    build: 
+      context: .
     command: 
       - ./commands/start_celery.sh
     restart: always
     volumes:
-      - ./src:/amodius
-      - ./commands:/amodius/commands
+      - .:/usr/src/app
     env_file:
       - .env
     depends_on:
@@ -25,35 +22,31 @@ services:
       - backend
 
   celerybeat:
-    build: ./
+    build: 
+      context: .
     command:
       - ./commands/start_celerybeat.sh
     restart: always
     volumes:
-      - ./src:/amodius
-      - ./commands:/amodius/commands
+      - .:/usr/src/app
     env_file:
       - .env
     depends_on:
       - redis
-      - celery
-
 
   backend:
-    container_name: amodius-backend
-    build:
+    build: 
       context: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./amodius:/usr/src/app/
+      - .:/usr/src/app
     ports:
-      - 8001:8000
+      - 8000:8000
     env_file:
       - .env
 
   db:
     image: postgres:14-alpine
-    container_name: amodius-postgres
     env_file:
       - .env
     ports:

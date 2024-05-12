@@ -11,9 +11,7 @@ COPY ./requirements.txt /usr/src/app/requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./commands/entrypoint.sh /usr/src/commands/entrypoint.sh
-
 COPY . /usr/src/app/
 
-ENTRYPOINT ["/usr/src/commands/entrypoint.sh"]
+ENTRYPOINT [["/usr/src/app/commands/entrypoint.sh"]
 
